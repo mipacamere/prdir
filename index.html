@@ -2,14 +2,22 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Your Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Bed and Breakfast Widget</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
     .rrp-widget-open-modal {
+      display: inline-block;
       background-color: #28a745;
       color: white;
       padding: 12px 24px;
       text-decoration: none;
       border-radius: 4px;
+      font-size: 16px;
     }
     .rrp-widget-open-modal:hover {
       background-color: #218838;
@@ -17,11 +25,11 @@
   </style>
 </head>
 <body>
-  <h1>Welcome to My Bed & Breakfast</h1>
-  <p>Check room availability:</p>
+  <h1>Test Widget Bed and Breakfast</h1>
+  <p>Click below to check room availability:</p>
   <a href="#" class="rrp-widget-open-modal">Mostra le camere</a>
 
-  <!-- Widget script -->
-  <script async type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it"></script>
+  <!-- Widget Script -->
+  <script type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it"></script>
 </body>
 </html>
