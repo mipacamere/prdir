@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Test Widget</title>
+  <meta charset="UTF-8">
+  <title>Your Website</title>
+  <style>
+    .rrp-widget-open-modal {
+      background-color: #28a745;
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    .rrp-widget-open-modal:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 <body>
-    <div id="booking-widget">Loading...</div>
-    <script type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it" onload="console.log('Loaded')" onerror="console.log('Error')"></script>
+  <h1>Welcome to My Bed & Breakfast</h1>
+  <p>Check room availability:</p>
+  <a href="#" class="rrp-widget-open-modal">Mostra le camere</a>
+
+  <!-- Widget script -->
+  <script async type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it"></script>
 </body>
 </html>
