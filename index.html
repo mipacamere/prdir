@@ -3,12 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bed and Breakfast Widget - Auto Show Rooms</title>
+  <title>Bed and Breakfast - Room Booking</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 20px;
+      text-align: center;
+    }
+    .header {
+      padding: 20px 0;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+      max-width: 300px; /* Adjust size as needed */
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    .booking-message {
+      margin: 20px 0;
+      font-size: 1.2em;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .booking-message a {
+      color: #28a745;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .booking-message a:hover {
+      text-decoration: underline;
+    }
+    .widget-section {
+      margin-top: 30px;
     }
     .rrp-widget-open-modal {
       display: inline-block;
@@ -18,33 +56,61 @@
       text-decoration: none;
       border-radius: 4px;
       font-size: 16px;
+      margin-bottom: 20px;
     }
     .rrp-widget-open-modal:hover {
       background-color: #218838;
     }
+    /* Ensure modal is visible if it has positioning issues */
+    .rrp-widget-modal {
+      z-index: 9999 !important;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .logo {
+        max-width: 200px;
+      }
+      .booking-message {
+        font-size: 1em;
+        padding: 0 10px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Bed and Breakfast Rooms</h1>
-  <p>Room availability:</p>
-  <!-- Keep the button for manual triggering or fallback -->
-  <a href="#" class="rrp-widget-open-modal">Mostra le camere</a>
+  <div class="header">
+    <div class="container">
+      <!-- Business Logo -->
+      <img src="https://www.dropbox.com/scl/fi/qf6rh5hu0qkqgsk90drl5/logo-scritta.png?rlkey=vrwptmixyur2z3by3d8ux5oox&st=bhy67fu0&raw=1" alt="Bed and Breakfast Logo" class="logo">
+    </div>
+  </div>
 
-  <!-- Widget Script -->
-  <script type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it"></script>
+  <div class="container">
+    <!-- Booking Message -->
+    <p class="booking-message">
+      Check the price for the room you booked with a direct booking, and see how it is the best deal. You can decide to book straight from here or contacting the host at <a href="tel:+396664741128">+39 666 474 1128</a>.
+    </p>
 
-  <!-- Auto-Trigger Script -->
-  <script>
-    window.addEventListener('load', function() {
-      // Find the element with rrp-widget-open-modal class
-      const modalTrigger = document.querySelector('.rrp-widget-open-modal');
-      if (modalTrigger) {
-        // Simulate a click on the element
-        modalTrigger.click();
-      } else {
-        console.error('Modal trigger element not found');
-      }
-    });
-  </script>
+    <!-- Widget Section -->
+    <div class="widget-section">
+      <!-- Optional Button (kept as fallback) -->
+      <a href="#" class="rrp-widget-open-modal">Mostra le camere</a>
+
+      <!-- Widget Script -->
+      <script type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it"></script>
+
+      <!-- Auto-Trigger Script -->
+      <script>
+        window.addEventListener('load', function() {
+          const modalTrigger = document.querySelector('.rrp-widget-open-modal');
+          if (modalTrigger) {
+            modalTrigger.click();
+          } else {
+            console.error('Modal trigger element not found');
+          }
+        });
+      </script>
+    </div>
+  </div>
 </body>
 </html>
