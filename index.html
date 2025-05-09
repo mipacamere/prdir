@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Bed and Breakfast Widget</title>
+  <title>Bed and Breakfast Widget - Auto Show Rooms</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -25,11 +25,26 @@
   </style>
 </head>
 <body>
-  <h1>Test Widget Bed and Breakfast</h1>
-  <p>Click below to check room availability:</p>
+  <h1>Bed and Breakfast Rooms</h1>
+  <p>Room availability:</p>
+  <!-- Keep the button for manual triggering or fallback -->
   <a href="#" class="rrp-widget-open-modal">Mostra le camere</a>
 
   <!-- Widget Script -->
   <script type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it"></script>
+
+  <!-- Auto-Trigger Script -->
+  <script>
+    window.addEventListener('load', function() {
+      // Find the element with rrp-widget-open-modal class
+      const modalTrigger = document.querySelector('.rrp-widget-open-modal');
+      if (modalTrigger) {
+        // Simulate a click on the element
+        modalTrigger.click();
+      } else {
+        console.error('Modal trigger element not found');
+      }
+    });
+  </script>
 </body>
 </html>
