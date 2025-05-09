@@ -25,7 +25,7 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     .logo {
-      max-width: 300px; /* Adjust size as needed */
+      max-width: 300px;
       height: auto;
       margin: 0 auto;
       display: block;
@@ -48,6 +48,14 @@
     .widget-section {
       margin-top: 30px;
     }
+    .widget-container {
+      margin-top: 20px;
+      min-height: 600px; /* Adjust based on widget height */
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      background-color: #fff;
+    }
     .rrp-widget-open-modal {
       display: inline-block;
       background-color: #28a745;
@@ -61,9 +69,11 @@
     .rrp-widget-open-modal:hover {
       background-color: #218838;
     }
-    /* Ensure modal is visible if it has positioning issues */
+    /* Hide modal overlay if it interferes */
     .rrp-widget-modal {
-      z-index: 9999 !important;
+      position: relative !important;
+      z-index: 1 !important;
+      background: transparent !important;
     }
     /* Responsive adjustments */
     @media (max-width: 600px) {
@@ -74,42 +84,32 @@
         font-size: 1em;
         padding: 0 10px;
       }
+      .widget-container {
+        min-height: 400px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="header">
     <div class="container">
-      <!-- Business Logo -->
       <img src="https://www.dropbox.com/scl/fi/qf6rh5hu0qkqgsk90drl5/logo-scritta.png?rlkey=vrwptmixyur2z3by3d8ux5oox&st=bhy67fu0&raw=1" alt="Bed and Breakfast Logo" class="logo">
     </div>
   </div>
 
   <div class="container">
-    <!-- Booking Message -->
     <p class="booking-message">
       Check the price for the room you booked with a direct booking, and see how it is the best deal. You can decide to book straight from here or contacting the host at <a href="tel:+396664741128">+39 666 474 1128</a>.
     </p>
 
-    <!-- Widget Section -->
     <div class="widget-section">
       <!-- Optional Button (kept as fallback) -->
       <a href="#" class="rrp-widget-open-modal">Mostra le camere</a>
 
-      <!-- Widget Script -->
-      <script type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it"></script>
-
-      <!-- Auto-Trigger Script -->
-      <script>
-        window.addEventListener('load', function() {
-          const modalTrigger = document.querySelector('.rrp-widget-open-modal');
-          if (modalTrigger) {
-            modalTrigger.click();
-          } else {
-            console.error('Modal trigger element not found');
-          }
-        });
-      </script>
+      <!-- Widget Container -->
+      <div class="widget-container">
+        <script type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it"></script>
+      </div>
     </div>
   </div>
 </body>
