@@ -55,6 +55,7 @@
       border-radius: 4px;
       padding: 10px;
       background-color: #fff;
+      position: relative;
     }
     .rrp-widget-open-modal {
       display: inline-block;
@@ -69,11 +70,29 @@
     .rrp-widget-open-modal:hover {
       background-color: #218838;
     }
-    /* Hide modal overlay if it interferes */
-    .rrp-widget-modal {
-      position: relative !important;
+    /* Override modal styles to make it inline */
+    .rrp-widget-modal,
+    .rrp-widget-modal * {
+      position: static !important;
       z-index: 1 !important;
       background: transparent !important;
+      width: 100% !important;
+      height: auto !important;
+      top: auto !important;
+      left: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+    }
+    /* Ensure widget content fits within container */
+    .widget-container .rrp-widget-modal {
+      display: block !important;
+    }
+    /* Iframe fallback */
+    .widget-iframe {
+      width: 100%;
+      min-height: 600px;
+      border: none;
     }
     /* Responsive adjustments */
     @media (max-width: 600px) {
@@ -85,6 +104,9 @@
         padding: 0 10px;
       }
       .widget-container {
+        min-height: 400px;
+      }
+      .widget-iframe {
         min-height: 400px;
       }
     }
@@ -103,14 +125,34 @@
     </p>
 
     <div class="widget-section">
-      <!-- Optional Button (kept as fallback) -->
+      <!-- Button to trigger widget (optional) -->
       <a href="#" class="rrp-widget-open-modal">Mostra le camere</a>
 
       <!-- Widget Container -->
       <div class="widget-container">
+        <!-- Attempt to load widget inline -->
         <script type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it"></script>
+
+        <!-- Iframe fallback (uncomment if widget doesn't render inline) -->
+        <!--
+        <iframe class="widget-iframe" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it" frameborder="0"></iframe>
+        -->
       </div>
     </div>
   </div>
+
+  <!-- JavaScript to monitor widget behavior -->
+  <script>
+    window.addEventListener('load', function() {
+      const modal = document.querySelector('.rrp-widget-modal');
+      if (modal) {
+        console.log('Widget modal detected, attempting to reposition');
+        modal.style.position = 'static';
+        modal.style.zIndex = '1';
+      } else {
+        console.log('No modal found, widget may be rendering inline or failed to load');
+      }
+    });
+  </script>
 </body>
 </html>
