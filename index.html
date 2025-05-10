@@ -12,18 +12,19 @@
       line-height: 1.6;
       color: #333;
       background-color: #f9f9f9;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
     
-    /* Top section - fixed header */
+    /* Top section - fixed height */
     .top-section {
       background-color: #fff;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       padding: 15px 0;
-      flex: 0 0 auto;
+      position: relative;
+      z-index: 100; /* Ensure top section stays above modal */
+      flex-shrink: 0;
     }
     
     .container {
@@ -61,28 +62,12 @@
     /* Bottom section - widget area */
     .widget-section {
       flex: 1;
-      display: flex;
-      flex-direction: column;
       padding: 20px 0;
-      overflow: hidden;
+      position: relative;
     }
     
-    .widget-container {
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 0 20px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    
-    .widget-button-container {
-      margin-bottom: 15px;
-      text-align: center;
-    }
-    
-    .widget-button {
+    /* Widget button styling */
+    .rrp-widget-open-modal {
       display: inline-block;
       background-color: #28a745;
       color: white;
@@ -90,58 +75,46 @@
       text-decoration: none;
       border-radius: 4px;
       font-size: 16px;
-      border: none;
       cursor: pointer;
+      margin-bottom: 20px;
     }
     
-    .widget-button:hover {
+    .rrp-widget-open-modal:hover {
       background-color: #218838;
     }
     
-    .widget-frame-container {
-      flex: 1;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      overflow: hidden;
-      display: none; /* Initially hidden */
+    /* Override widget modal styles to constrain to bottom section */
+    #rrpWidgetModal {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      height: auto !important;
+      width: auto !important;
     }
     
-    .widget-frame-container.visible {
-      display: block; /* Show when active */
+    .rrp-widget-modal-overlay {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      height: auto !important;
+      width: auto !important;
     }
     
-    .widget-iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      min-height: 500px;
+    .rrp-widget-modal-content {
+      position: relative !important;
+      max-height: 90% !important;
+      margin: 0 auto !important;
+      overflow: auto !important;
     }
     
-    /* Loading indicator */
-    .loading-spinner {
-      display: none;
-      text-align: center;
-      padding: 40px 0;
-    }
-    
-    .loading-spinner.visible {
-      display: block;
-    }
-    
-    .spinner {
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      border-radius: 50%;
-      border-top: 4px solid #28a745;
-      width: 40px;
-      height: 40px;
-      margin: 0 auto 20px;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .rrp-widget-iframe-form-camere {
+      width: 100% !important;
+      height: 80vh !important; /* Adjust height as needed */
+      max-height: 700px !important;
     }
     
     /* Responsive adjustments */
@@ -159,8 +132,8 @@
         padding: 0 10px;
       }
       
-      .widget-iframe {
-        min-height: 400px;
+      .rrp-widget-iframe-form-camere {
+        height: 70vh !important;
       }
     }
   </style>
@@ -178,54 +151,78 @@
   </div>
 
   <!-- Bottom Section (Widget Area) -->
-  <div class="widget-section">
-    <div class="widget-container">
-      <!-- Button to load widget -->
-      <div class="widget-button-container">
-        <button id="showWidgetBtn" class="widget-button">Mostra le camere</button>
-      </div>
+  <div class="widget-section" id="widgetSectionContainer">
+    <div class="container">
+      <!-- Widget button will be added by the script -->
+      <a href="#" class="rrp-widget-open-modal">Mostra le camere</a>
       
-      <!-- Loading indicator -->
-      <div id="loadingSpinner" class="loading-spinner">
-        <div class="spinner"></div>
-        <p>Caricamento in corso...</p>
-      </div>
-      
-      <!-- Widget Frame Container -->
-      <div id="widgetFrameContainer" class="widget-frame-container">
-        <iframe id="widgetFrame" class="widget-iframe" frameborder="0"></iframe>
+      <!-- Widget Container -->
+      <div class="widget-container">
+        <!-- The widget script will be loaded here -->
       </div>
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const showWidgetBtn = document.getElementById('showWidgetBtn');
-      const widgetFrame = document.getElementById('widgetFrame');
-      const widgetFrameContainer = document.getElementById('widgetFrameContainer');
-      const loadingSpinner = document.getElementById('loadingSpinner');
-      
-      // Widget URL
-      const widgetUrl = 'https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it';
-      
-      showWidgetBtn.addEventListener('click', function() {
-        // Show loading spinner
-        loadingSpinner.classList.add('visible');
+  <!-- Load widget script -->
+  <script type="text/javascript">
+    // Create a script element to load the widget script
+    const widgetScript = document.createElement('script');
+    widgetScript.type = 'text/javascript';
+    widgetScript.src = 'https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it';
+    
+    // Add the script to the page
+    document.querySelector('.widget-container').appendChild(widgetScript);
+    
+    // Function to apply our styling overrides after widget loads
+    function applyWidgetOverrides() {
+      // We need to wait for the widget to initialize
+      const checkWidgetInterval = setInterval(function() {
+        const widgetModal = document.getElementById('rrpWidgetModal');
         
-        // Load widget URL into iframe if not already loaded
-        if (!widgetFrame.src) {
-          widgetFrame.src = widgetUrl;
+        if (widgetModal) {
+          clearInterval(checkWidgetInterval);
+          
+          // Move the widget modal into our widget section if needed
+          const widgetSectionContainer = document.getElementById('widgetSectionContainer');
+          if (widgetModal.parentElement !== widgetSectionContainer) {
+            widgetSectionContainer.appendChild(widgetModal);
+          }
+          
+          // Apply our override styles
+          widgetModal.style.position = 'absolute';
+          widgetModal.style.top = '0';
+          widgetModal.style.left = '0';
+          widgetModal.style.right = '0';
+          widgetModal.style.bottom = '0';
+          widgetModal.style.height = 'auto';
+          widgetModal.style.width = 'auto';
+          
+          const overlay = widgetModal.querySelector('.rrp-widget-modal-overlay');
+          if (overlay) {
+            overlay.style.position = 'absolute';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.right = '0';
+            overlay.style.bottom = '0';
+          }
+          
+          const iframe = widgetModal.querySelector('.rrp-widget-iframe-form-camere');
+          if (iframe) {
+            iframe.style.width = '100%';
+            iframe.style.height = '80vh';
+            iframe.style.maxHeight = '700px';
+          }
+          
+          console.log('Widget styling overrides applied');
         }
-        
-        // Show widget container
-        widgetFrameContainer.classList.add('visible');
-        
-        // Hide loading spinner when iframe loads
-        widgetFrame.onload = function() {
-          loadingSpinner.classList.remove('visible');
-        };
-      });
-    });
+      }, 500); // Check every 500ms
+    }
+    
+    // Run our overrides after the page loads
+    window.addEventListener('load', applyWidgetOverrides);
+    
+    // Additional backup in case the widget loads later
+    setTimeout(applyWidgetOverrides, 2000);
   </script>
 </body>
 </html>
