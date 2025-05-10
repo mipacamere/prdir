@@ -12,23 +12,18 @@
       line-height: 1.6;
       color: #333;
       background-color: #f9f9f9;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
       overflow: hidden;
     }
     
-    /* Top section - fixed height */
+    /* Top section - fixed header */
     .top-section {
-      flex: 0 0 auto;
       background-color: #fff;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      z-index: 10;
-    }
-    
-    .header {
-      padding: 20px 0;
-      background-color: #fff;
+      padding: 15px 0;
+      flex: 0 0 auto;
     }
     
     .container {
@@ -46,7 +41,7 @@
     }
     
     .booking-message {
-      margin: 20px 0;
+      margin: 15px 0;
       font-size: 1.2em;
       max-width: 600px;
       margin-left: auto;
@@ -63,27 +58,31 @@
       text-decoration: underline;
     }
     
-    /* Bottom section - widget area (scrollable) */
+    /* Bottom section - widget area */
     .widget-section {
       flex: 1;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
       padding: 20px 0;
-      background-color: #f9f9f9;
-      position: relative;
+      overflow: hidden;
     }
     
     .widget-container {
-      margin: 0 auto;
       max-width: 1200px;
-      padding: 20px;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      min-height: 400px;
-      position: relative;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
     }
     
-    .rrp-widget-open-modal {
+    .widget-button-container {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .widget-button {
       display: inline-block;
       background-color: #28a745;
       color: white;
@@ -91,34 +90,64 @@
       text-decoration: none;
       border-radius: 4px;
       font-size: 16px;
-      margin-bottom: 20px;
+      border: none;
+      cursor: pointer;
     }
     
-    .rrp-widget-open-modal:hover {
+    .widget-button:hover {
       background-color: #218838;
     }
     
-    /* Widget specific overrides */
-    .rrp-widget-modal {
-      position: relative !important;
-      top: 0 !important;
-      left: 0 !important;
-      width: 100% !important;
-      height: auto !important;
-      background: transparent !important;
-      z-index: 1 !important;
+    .widget-frame-container {
+      flex: 1;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+      display: none; /* Initially hidden */
+    }
+    
+    .widget-frame-container.visible {
+      display: block; /* Show when active */
     }
     
     .widget-iframe {
       width: 100%;
-      min-height: 500px;
+      height: 100%;
       border: none;
+      min-height: 500px;
+    }
+    
+    /* Loading indicator */
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+    
+    .loading-spinner.visible {
+      display: block;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid #28a745;
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 20px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .top-section {
-        padding-bottom: 10px;
+        padding: 10px 0;
       }
       
       .logo {
@@ -130,10 +159,6 @@
         padding: 0 10px;
       }
       
-      .widget-container {
-        padding: 10px;
-      }
-      
       .widget-iframe {
         min-height: 400px;
       }
@@ -143,84 +168,62 @@
 <body>
   <!-- Top Section (Fixed) -->
   <div class="top-section">
-    <div class="header">
-      <div class="container">
-        <img src="https://www.dropbox.com/scl/fi/qf6rh5hu0qkqgsk90drl5/logo-scritta.png?rlkey=vrwptmixyur2z3by3d8ux5oox&st=bhy67fu0&raw=1" alt="Bed and Breakfast Logo" class="logo">
-      </div>
-    </div>
-    
     <div class="container">
+      <img src="https://www.dropbox.com/scl/fi/qf6rh5hu0qkqgsk90drl5/logo-scritta.png?rlkey=vrwptmixyur2z3by3d8ux5oox&st=bhy67fu0&raw=1" alt="Bed and Breakfast Logo" class="logo">
+      
       <p class="booking-message">
         Check the price for the room you booked with a direct booking, and see how it is the best deal. You can decide to book straight from here or contacting the host at <a href="tel:+396664741128">+39 666 474 1128</a>.
       </p>
     </div>
   </div>
 
-  <!-- Bottom Section (Widget Area - Scrollable) -->
+  <!-- Bottom Section (Widget Area) -->
   <div class="widget-section">
-    <div class="container">
-      <!-- Button to trigger widget -->
-      <a href="#" class="rrp-widget-open-modal">Mostra le camere</a>
+    <div class="widget-container">
+      <!-- Button to load widget -->
+      <div class="widget-button-container">
+        <button id="showWidgetBtn" class="widget-button">Mostra le camere</button>
+      </div>
       
-      <!-- Widget Container -->
-      <div class="widget-container">
-        <!-- Widget script -->
-        <script type="text/javascript" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it"></script>
-
-        <!-- Iframe fallback (uncomment if script doesn't work properly) -->
-        <!--
-        <iframe class="widget-iframe" src="https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it" frameborder="0"></iframe>
-        -->
+      <!-- Loading indicator -->
+      <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Caricamento in corso...</p>
+      </div>
+      
+      <!-- Widget Frame Container -->
+      <div id="widgetFrameContainer" class="widget-frame-container">
+        <iframe id="widgetFrame" class="widget-iframe" frameborder="0"></iframe>
       </div>
     </div>
   </div>
 
-  <!-- JavaScript to handle widget behavior -->
   <script>
-    window.addEventListener('load', function() {
-      // Target both potential modal elements
-      const modal = document.querySelector('.rrp-widget-modal');
-      const widgetFrame = document.querySelector('.rrp-widget iframe, .widget-iframe');
+    document.addEventListener('DOMContentLoaded', function() {
+      const showWidgetBtn = document.getElementById('showWidgetBtn');
+      const widgetFrame = document.getElementById('widgetFrame');
+      const widgetFrameContainer = document.getElementById('widgetFrameContainer');
+      const loadingSpinner = document.getElementById('loadingSpinner');
       
-      if (modal) {
-        console.log('Widget modal detected, ensuring proper display');
-        // Ensure modal stays within the widget container
-        modal.style.position = 'relative';
-        modal.style.top = '0';
-        modal.style.left = '0';
-        modal.style.width = '100%';
-        modal.style.height = 'auto';
-        modal.style.zIndex = '1';
-      }
+      // Widget URL
+      const widgetUrl = 'https://www.bed-and-breakfast.it/scripts/widget/widget_frm_camere.cfm?idstruttura=7054&idregione=15&l=it';
       
-      if (widgetFrame) {
-        console.log('Widget iframe detected, adjusting dimensions');
-        widgetFrame.style.width = '100%';
-        widgetFrame.style.height = '500px';
-      }
-      
-      // Handle any dynamically created elements by the widget
-      const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-          if (mutation.addedNodes && mutation.addedNodes.length > 0) {
-            for (let i = 0; i < mutation.addedNodes.length; i++) {
-              const node = mutation.addedNodes[i];
-              if (node.classList && node.classList.contains('rrp-widget-modal')) {
-                node.style.position = 'relative';
-                node.style.top = '0';
-                node.style.left = '0';
-                node.style.width = '100%';
-                node.style.height = 'auto';
-                node.style.zIndex = '1';
-              }
-            }
-          }
-        });
-      });
-      
-      observer.observe(document.body, { 
-        childList: true, 
-        subtree: true 
+      showWidgetBtn.addEventListener('click', function() {
+        // Show loading spinner
+        loadingSpinner.classList.add('visible');
+        
+        // Load widget URL into iframe if not already loaded
+        if (!widgetFrame.src) {
+          widgetFrame.src = widgetUrl;
+        }
+        
+        // Show widget container
+        widgetFrameContainer.classList.add('visible');
+        
+        // Hide loading spinner when iframe loads
+        widgetFrame.onload = function() {
+          loadingSpinner.classList.remove('visible');
+        };
       });
     });
   </script>
